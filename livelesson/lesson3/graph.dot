@@ -1,0 +1,35 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] aws_s3_bucket.bucket1" [label = "aws_s3_bucket.bucket1", shape = "box"]
+		"[root] aws_s3_bucket.bucket2" [label = "aws_s3_bucket.bucket2", shape = "box"]
+		"[root] aws_s3_bucket.bucket3" [label = "aws_s3_bucket.bucket3", shape = "box"]
+		"[root] aws_s3_bucket.bucket4" [label = "aws_s3_bucket.bucket4", shape = "box"]
+		"[root] data.aws_availability_zones.available" [label = "data.aws_availability_zones.available", shape = "box"]
+		"[root] data.aws_caller_identity.current" [label = "data.aws_caller_identity.current", shape = "box"]
+		"[root] output.aws_availability_zones" [label = "output.aws_availability_zones", shape = "note"]
+		"[root] output.aws_caller_info" [label = "output.aws_caller_info", shape = "note"]
+		"[root] output.bucket_info" [label = "output.bucket_info", shape = "note"]
+		"[root] provider.aws" [label = "provider.aws", shape = "diamond"]
+		"[root] aws_s3_bucket.bucket1" -> "[root] provider.aws"
+		"[root] aws_s3_bucket.bucket2" -> "[root] data.aws_caller_identity.current"
+		"[root] aws_s3_bucket.bucket3" -> "[root] aws_s3_bucket.bucket2"
+		"[root] aws_s3_bucket.bucket4" -> "[root] aws_s3_bucket.bucket3"
+		"[root] data.aws_availability_zones.available" -> "[root] provider.aws"
+		"[root] data.aws_caller_identity.current" -> "[root] provider.aws"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_s3_bucket.bucket4"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] output.aws_availability_zones"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] output.aws_caller_info"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] output.bucket_info"
+		"[root] output.aws_availability_zones" -> "[root] data.aws_availability_zones.available"
+		"[root] output.aws_caller_info" -> "[root] data.aws_caller_identity.current"
+		"[root] output.bucket_info" -> "[root] aws_s3_bucket.bucket1"
+		"[root] provider.aws (close)" -> "[root] aws_s3_bucket.bucket1"
+		"[root] provider.aws (close)" -> "[root] aws_s3_bucket.bucket4"
+		"[root] provider.aws (close)" -> "[root] data.aws_availability_zones.available"
+		"[root] root" -> "[root] meta.count-boundary (EachMode fixup)"
+		"[root] root" -> "[root] provider.aws (close)"
+	}
+}
+
